@@ -11,8 +11,9 @@ export class JsonFileDataStore implements DataStore {
     try {
       const content = await fs.readFile(this.filePath, 'utf8');
       return JSON.parse(content) as Record<string, StoredDataRecord>;
-    } catch {
-      return {};
+    } catch (err) {
+      if ((err as { code?: string }).code === 'ENOENT') return {};
+      throw err;
     }
   }
 

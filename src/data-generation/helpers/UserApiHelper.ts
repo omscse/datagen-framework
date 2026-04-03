@@ -1,3 +1,4 @@
+import { apiDelete } from '../../support/http/apiClient.js';
 import type { User } from '../models/user.js';
 
 export class UserApiHelper {
@@ -5,7 +6,7 @@ export class UserApiHelper {
     return { id: 'user-1', name: 'Default User' };
   }
 
-  async deleteUser(_id: string): Promise<void> {
-    // placeholder
+  async deleteUser(id: string): Promise<void> {
+    await apiDelete(`/users/${id}`);
   }
 }
