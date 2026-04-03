@@ -1,11 +1,26 @@
 {
-  "name": "data-generation-framework-scaffold",
+  "name": "datagen-framework",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
+  "author": "Omprakash Selvaraj",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "create-pack": "node scripts/create-pack.js"
+    "web-ui": "npm run build && node dist/data-generation-example/run-web-ui.js",
+    "create-pack": "node scripts/create-pack.js",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
