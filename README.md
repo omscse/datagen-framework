@@ -26,13 +26,13 @@ A TypeScript framework for defining, generating, and cleaning up test data acros
 
 ## Architecture
 
-![Architecture](docs/architecture.svg)
+![Architecture](https://raw.githubusercontent.com/omscse/datagen-framework/main/docs/architecture.svg)
 
 ---
 
 ## Data Lifecycle
 
-![Flow Animation](docs/flow-animation.svg)
+![Flow Animation](https://raw.githubusercontent.com/omscse/datagen-framework/main/docs/flow-animation.svg)
 
 ---
 
