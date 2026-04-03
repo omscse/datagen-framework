@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 490" style="font-family:system-ui,-apple-system,sans-serif">
+  <defs>
+    <filter id="card-shadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#00000010"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="820" height="490" rx="14" fill="#f4f6f9"/>
+  <rect x="1" y="1" width="818" height="488" rx="13" fill="none" stroke="#e2e6ec"/>
+
+  <!-- Title -->
+  <text x="410" y="30" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">Pack Contract — DataGenerationPack&lt;TData, TInput&gt;</text>
+  <text x="410" y="50" text-anchor="middle" fill="#8892a4" font-size="11">Every data pack must implement this TypeScript interface and be decorated with @Pack</text>
+  <line x1="60" y1="60" x2="760" y2="60" stroke="#e2e6ec"/>
+
+  <!-- ═══════════ MAIN CLASS BOX ═══════════ -->
+  <rect x="200" y="70" width="420" height="345" rx="12" fill="#ffffff" stroke="#c7d0e0" stroke-width="1.5" filter="url(#card-shadow)"/>
+
+  <!-- Section dividers -->
+  <line x1="200" y1="148" x2="620" y2="148" stroke="#f0f2f6" stroke-width="1.5"/>
+  <line x1="200" y1="233" x2="620" y2="233" stroke="#f0f2f6" stroke-width="1.5"/>
+  <line x1="200" y1="318" x2="620" y2="318" stroke="#f0f2f6" stroke-width="1.5"/>
+  <line x1="200" y1="398" x2="620" y2="398" stroke="#f0f2f6" stroke-width="1.5"/>
+
+  <!-- ── Section 1: Header ── -->
+  <text x="216" y="92" fill="#5b5ef4" font-family="monospace" font-size="10.5">@Pack&#40;&#123; name: 'my-pack', description: '...' &#125;&#41;</text>
+  <text x="216" y="112" fill="#1a1a2e" font-family="monospace" font-size="12" font-weight="600">class YourPack implements</text>
+  <text x="216" y="130" fill="#1a1a2e" font-family="monospace" font-size="12" font-weight="600">  DataGenerationPack&lt;<tspan fill="#5b5ef4">TData</tspan>, <tspan fill="#0f7a54">TInput</tspan>&gt; &#123;</text>
+
+  <!-- ── Section 2: createDefault ── -->
+  <rect x="216" y="156" width="68" height="16" rx="8" fill="#e8f8f2"/>
+  <text x="250" y="168" text-anchor="middle" fill="#0f7a54" font-family="monospace" font-size="9" font-weight="700">REQUIRED</text>
+  <text x="216" y="188" fill="#1a1a2e" font-family="monospace" font-size="11.5">async createDefault()</text>
+  <text x="216" y="204" fill="#8892a4" font-family="monospace" font-size="11">  : Promise&lt;<tspan fill="#5b5ef4">TData</tspan>&gt;</text>
+  <text x="216" y="221" fill="#8892a4" font-size="10.5">Generates the default data entity — always present</text>
+
+  <!-- ── Section 3: createCustom ── -->
+  <rect x="216" y="240" width="68" height="16" rx="8" fill="#fff8e6"/>
+  <text x="250" y="252" text-anchor="middle" fill="#b45309" font-family="monospace" font-size="9" font-weight="700">OPTIONAL</text>
+  <text x="216" y="272" fill="#1a1a2e" font-family="monospace" font-size="11.5">async createCustom(input: <tspan fill="#0f7a54">TInput</tspan>)</text>
+  <text x="216" y="288" fill="#8892a4" font-family="monospace" font-size="11">  : Promise&lt;<tspan fill="#5b5ef4">TData</tspan>&gt;</text>
+  <text x="216" y="305" fill="#8892a4" font-size="10.5">Generates data from caller-supplied input</text>
+
+  <!-- ── Section 4: delete ── -->
+  <rect x="216" y="326" width="68" height="16" rx="8" fill="#e8f8f2"/>
+  <text x="250" y="338" text-anchor="middle" fill="#0f7a54" font-family="monospace" font-size="9" font-weight="700">REQUIRED</text>
+  <text x="216" y="358" fill="#1a1a2e" font-family="monospace" font-size="11.5">async delete(data: <tspan fill="#5b5ef4">TData</tspan>)</text>
+  <text x="216" y="374" fill="#8892a4" font-family="monospace" font-size="11">  : Promise&lt;void&gt;</text>
+  <text x="216" y="391" fill="#8892a4" font-size="10.5">Cleans up the generated entity (API call, DB teardown…)</text>
+
+  <!-- ── Closing brace ── -->
+  <text x="216" y="413" fill="#1a1a2e" font-family="monospace" font-size="12" font-weight="600">&#125;</text>
+
+  <!-- ═══════════ LEFT CALLOUTS ═══════════ -->
+
+  <!-- @Pack decorator callout -->
+  <rect x="18" y="78" width="172" height="64" rx="9" fill="#eeeeff" stroke="#b8b9f8" stroke-width="1" filter="url(#card-shadow)"/>
+  <text x="104" y="99"  text-anchor="middle" fill="#1a1a2e" font-size="11" font-weight="600">@Pack Decorator</text>
+  <text x="104" y="114" text-anchor="middle" fill="#5b5ef4" font-size="10">Registers name + description</text>
+  <text x="104" y="129" text-anchor="middle" fill="#5b5ef4" font-size="10">as pack metadata</text>
+  <!-- connector -->
+  <line x1="190" y1="110" x2="200" y2="110" stroke="#b8b9f8" stroke-width="1.2"/>
+  <circle cx="190" cy="110" r="2.5" fill="#b8b9f8"/>
+
+  <!-- createCustom — optional note callout -->
+  <rect x="18" y="240" width="172" height="64" rx="9" fill="#fff8e6" stroke="#f0c87a" stroke-width="1" filter="url(#card-shadow)"/>
+  <text x="104" y="261" text-anchor="middle" fill="#1a1a2e" font-size="11" font-weight="600">When to add it</text>
+  <text x="104" y="276" text-anchor="middle" fill="#b45309" font-size="10">Enables "Custom" button in</text>
+  <text x="104" y="291" text-anchor="middle" fill="#b45309" font-size="10">Web UI and --custom in CLI</text>
+  <!-- connector -->
+  <line x1="190" y1="272" x2="200" y2="272" stroke="#f0c87a" stroke-width="1.2"/>
+  <circle cx="190" cy="272" r="2.5" fill="#f0c87a"/>
+
+  <!-- ═══════════ RIGHT CALLOUTS ═══════════ -->
+
+  <!-- createDefault callout -->
+  <rect x="630" y="155" width="172" height="64" rx="9" fill="#e8f8f2" stroke="#a3d9c0" stroke-width="1" filter="url(#card-shadow)"/>
+  <text x="716" y="176" text-anchor="middle" fill="#1a1a2e" font-size="11" font-weight="600">Default path</text>
+  <text x="716" y="191" text-anchor="middle" fill="#0f7a54" font-size="10">Called by generateDefault()</text>
+  <text x="716" y="206" text-anchor="middle" fill="#0f7a54" font-size="10">No input required</text>
+  <!-- connector -->
+  <line x1="620" y1="188" x2="630" y2="188" stroke="#a3d9c0" stroke-width="1.2"/>
+  <circle cx="630" cy="188" r="2.5" fill="#a3d9c0"/>
+
+  <!-- delete callout -->
+  <rect x="630" y="326" width="172" height="64" rx="9" fill="#fef2f2" stroke="#f5c0c2" stroke-width="1" filter="url(#card-shadow)"/>
+  <text x="716" y="347" text-anchor="middle" fill="#1a1a2e" font-size="11" font-weight="600">Cleanup hook</text>
+  <text x="716" y="362" text-anchor="middle" fill="#c0222a" font-size="10">Called by generator.cleanup()</text>
+  <text x="716" y="377" text-anchor="middle" fill="#c0222a" font-size="10">and cleanupAll()</text>
+  <!-- connector -->
+  <line x1="620" y1="358" x2="630" y2="358" stroke="#f5c0c2" stroke-width="1.2"/>
+  <circle cx="630" cy="358" r="2.5" fill="#f5c0c2"/>
+
+  <!-- ═══════════ TYPE PARAMETERS FOOTER ═══════════ -->
+  <line x1="60" y1="435" x2="760" y2="435" stroke="#e2e6ec"/>
+  <text x="80" y="455" fill="#8892a4" font-size="11" font-weight="600">Type Parameters</text>
+
+  <!-- TData pill -->
+  <rect x="195" y="441" width="48" height="20" rx="6" fill="#eeeeff"/>
+  <text x="219" y="455" text-anchor="middle" fill="#5b5ef4" font-family="monospace" font-size="10.5" font-weight="700">TData</text>
+  <text x="248" y="455" fill="#8892a4" font-size="11">— shape of the entity your pack creates  (e.g. User, Order, Product)</text>
+
+  <!-- TInput pill -->
+  <rect x="195" y="464" width="48" height="20" rx="6" fill="#e8f8f2"/>
+  <text x="219" y="478" text-anchor="middle" fill="#0f7a54" font-family="monospace" font-size="10.5" font-weight="700">TInput</text>
+  <text x="248" y="478" fill="#8892a4" font-size="11">— input shape for createCustom  (defaults to unknown when omitted)</text>
+</svg>

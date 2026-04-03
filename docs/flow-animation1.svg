@@ -1,0 +1,241 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 440" style="font-family:system-ui,-apple-system,sans-serif">
+  <defs>
+    <style>
+      .phase-generate { animation: fadePhase 12s infinite 0s; }
+      .phase-cache     { animation: fadePhase 12s infinite 4s; }
+      .phase-cleanup   { animation: fadePhase 12s infinite 8s; }
+
+      @keyframes fadePhase {
+        0%   { opacity: 0; }
+        8%   { opacity: 1; }
+        25%  { opacity: 1; }
+        33%  { opacity: 0; }
+        100% { opacity: 0; }
+      }
+
+      .pulse-gen     { animation: pulseGen     12s infinite 0s; }
+      .pulse-store   { animation: pulseStore   12s infinite 0s; }
+      .pulse-cleanup { animation: pulseCleanup 12s infinite 0s; }
+
+      @keyframes pulseGen {
+        0%, 100% { stroke-opacity: 0.35; }
+        5%  { stroke-opacity: 1; }
+        30% { stroke-opacity: 1; }
+        40% { stroke-opacity: 0.35; }
+      }
+      @keyframes pulseStore {
+        0%, 100% { stroke-opacity: 0.35; }
+        35% { stroke-opacity: 0.35; }
+        40% { stroke-opacity: 1; }
+        65% { stroke-opacity: 1; }
+        72% { stroke-opacity: 0.35; }
+      }
+      @keyframes pulseCleanup {
+        0%, 100% { stroke-opacity: 0.35; }
+        68% { stroke-opacity: 0.35; }
+        75% { stroke-opacity: 1; }
+        95% { stroke-opacity: 1; }
+      }
+
+      /* Phase 1: Adapter → Generator */
+      .dot-a2g { animation: moveA2G 12s infinite 0s; }
+      @keyframes moveA2G {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+      /* Phase 1: Generator → Pack */
+      .dot-g2p { animation: moveG2P 12s infinite 0.8s; }
+      @keyframes moveG2P {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+      /* Phase 1: Pack → Store */
+      .dot-p2s { animation: moveP2S 12s infinite 1.8s; }
+      @keyframes moveP2S {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+
+      /* Phase 2: Store glow */
+      .store-glow { animation: storeGlow 12s infinite 0s; }
+      @keyframes storeGlow {
+        0%, 100% { opacity: 0; }
+        35%  { opacity: 0; }
+        40%  { opacity: 0.5; }
+        64%  { opacity: 0.5; }
+        68%  { opacity: 0; }
+      }
+
+      /* Phase 3: Adapter → Generator (cleanup call) */
+      .dot-a2gc { animation: moveA2GC 12s infinite 8s; }
+      @keyframes moveA2GC {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+      /* Phase 3: Generator → Pack (delete) */
+      .dot-g2pd { animation: moveG2PD 12s infinite 8.8s; }
+      @keyframes moveG2PD {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+      /* Phase 3: Generator → Store (store.delete) */
+      .dot-g2sd { animation: moveG2SD 12s infinite 9.4s; }
+      @keyframes moveG2SD {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+    </style>
+
+    <marker id="a-indigo" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5 Z" fill="#5b5ef4"/>
+    </marker>
+    <marker id="a-green" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5 Z" fill="#0f9c6a"/>
+    </marker>
+    <marker id="a-red" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5 Z" fill="#e0424a"/>
+    </marker>
+    <marker id="a-red-sm" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+      <path d="M0,0 L6,2 L0,4 Z" fill="#e0424a"/>
+    </marker>
+
+    <!-- motion paths -->
+    <path id="path-a2g"  d="M 188,190 L 288,190" fill="none"/>
+    <path id="path-g2p"  d="M 392,190 L 488,190" fill="none"/>
+    <path id="path-p2s"  d="M 590,222 C 618,222 638,252 638,268" fill="none"/>
+    <!-- Phase 3: Adapter bottom-center(110,222) → down → right → Generator left-bottom(288,222) -->
+    <path id="path-a2gc" d="M 110,222 L 110,300 L 288,300 L 288,222" fill="none"/>
+    <!-- Phase 3: Generator right-bottom(444,222) → down to y=300 → across to Pack x=566 → up into Pack(566,222) -->
+    <path id="path-g2pd" d="M 444,222 L 444,300 L 566,300 L 566,222" fill="none"/>
+    <!-- Phase 3: Generator bottom-center(366,222) → curves down-right → Store left-center(560,309) -->
+    <path id="path-g2sd" d="M 366,222 C 400,275 490,305 560,309" fill="none"/>
+
+    <filter id="store-glow-f" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="card-shadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2.5" flood-color="#00000012"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="820" height="440" rx="14" fill="#f4f6f9"/>
+  <rect x="1" y="1" width="818" height="438" rx="13" fill="none" stroke="#e2e6ec"/>
+
+  <!-- Title -->
+  <text x="410" y="30" text-anchor="middle" fill="#1a1a2e" font-size="14" font-weight="700" letter-spacing="0.2">Data Lifecycle — Generate · Store · Cleanup</text>
+  <line x1="60" y1="40" x2="760" y2="40" stroke="#e2e6ec"/>
+
+  <!-- Phase badges -->
+  <g class="phase-generate">
+    <rect x="290" y="50" width="240" height="26" rx="13" fill="#eeeeff"/>
+    <text x="410" y="68" text-anchor="middle" fill="#5b5ef4" font-size="12" font-weight="600">① Generating Data</text>
+  </g>
+  <g class="phase-cache">
+    <rect x="290" y="50" width="240" height="26" rx="13" fill="#e8f8f2"/>
+    <text x="410" y="68" text-anchor="middle" fill="#0f7a54" font-size="12" font-weight="600">② Data Cached in Store</text>
+  </g>
+  <g class="phase-cleanup">
+    <rect x="290" y="50" width="240" height="26" rx="13" fill="#fef2f2"/>
+    <text x="410" y="68" text-anchor="middle" fill="#c0222a" font-size="12" font-weight="600">③ Cleanup via DataGenerator</text>
+  </g>
+
+  <!-- ═══ TOP ROW ═══ -->
+
+  <!-- [Adapter] -->
+  <rect x="32" y="158" width="156" height="64" rx="10" fill="#fff" stroke="#3b82f6" stroke-width="1.5" filter="url(#card-shadow)" class="pulse-gen"/>
+  <text x="110" y="182" text-anchor="middle" fill="#3b82f6" font-family="monospace" font-size="9">Web UI · CLI · Cypress</text>
+  <text x="110" y="204" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="700">Adapter</text>
+
+  <!-- Arrow: Adapter → Generator -->
+  <line x1="188" y1="190" x2="284" y2="190" stroke="#5b5ef4" stroke-width="1.5" stroke-opacity="0.4" marker-end="url(#a-indigo)"/>
+  <text x="236" y="183" text-anchor="middle" fill="#5b5ef4" font-family="monospace" font-size="9">generate()</text>
+
+  <!-- [DataGenerator] — central node, participates in phases 1 and 3 -->
+  <rect x="288" y="158" width="156" height="64" rx="10" fill="#fff" stroke="#5b5ef4" stroke-width="1.5" filter="url(#card-shadow)" class="pulse-gen"/>
+  <text x="366" y="182" text-anchor="middle" fill="#5b5ef4" font-family="monospace" font-size="8.5">DataGenerator</text>
+  <text x="366" y="204" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="700">Generator</text>
+
+  <!-- Arrow: Generator → Pack -->
+  <line x1="444" y1="190" x2="484" y2="190" stroke="#5b5ef4" stroke-width="1.5" stroke-opacity="0.4" marker-end="url(#a-indigo)"/>
+  <text x="464" y="183" text-anchor="middle" fill="#5b5ef4" font-family="monospace" font-size="9">create()</text>
+
+  <!-- [Pack] -->
+  <rect x="488" y="158" width="156" height="64" rx="10" fill="#fff" stroke="#5b5ef4" stroke-width="1.5" filter="url(#card-shadow)" class="pulse-gen"/>
+  <text x="566" y="182" text-anchor="middle" fill="#5b5ef4" font-family="monospace" font-size="8.5">createDefault / Custom()</text>
+  <text x="566" y="204" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="700">Data Pack</text>
+
+  <!-- Arrow: Pack → Store -->
+  <path d="M 590,222 C 618,222 638,252 638,268" stroke="#0f9c6a" stroke-width="1.5" stroke-opacity="0.4" fill="none" marker-end="url(#a-green)"/>
+  <text x="634" y="250" fill="#0f7a54" font-family="monospace" font-size="9">save()</text>
+
+  <!-- ═══ [Data Store] ═══ -->
+  <rect x="560" y="274" width="228" height="70" rx="10" fill="#0f9c6a" opacity="0" filter="url(#store-glow-f)" class="store-glow"/>
+  <rect x="560" y="274" width="228" height="70" rx="10" fill="#e8f8f2" stroke="#0f9c6a" stroke-width="1.5" filter="url(#card-shadow)" class="pulse-store"/>
+  <text x="674" y="296" text-anchor="middle" fill="#0f7a54" font-family="monospace" font-size="9">JsonFileDataStore / InMemoryDataStore</text>
+  <text x="674" y="317" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="700">Data Store</text>
+  <text x="674" y="334" text-anchor="middle" fill="#1a5c42" font-family="monospace" font-size="9">.datagen/store.json</text>
+
+  <!-- ═══ PHASE 3 — cleanup path ═══ -->
+
+  <!-- Phase 3 arrow: Adapter bottom(110,222) → down to y=300 → right to Generator left(288,300) → up into Generator(288,222) -->
+  <path d="M 110,222 L 110,300 L 288,300 L 288,222" stroke="#e0424a" stroke-width="1.5" stroke-opacity="0.4" fill="none" marker-end="url(#a-red)"/>
+  <text x="199" y="314" text-anchor="middle" fill="#e0424a" font-family="monospace" font-size="9">generator.cleanup(packName, data)</text>
+
+  <!-- Phase 3 arrow: Generator right-bottom(444,222) → down → across → up into Pack(566,222) -->
+  <path d="M 444,222 L 444,300 L 566,300 L 566,222" stroke="#e0424a" stroke-width="1.5" stroke-opacity="0.4" fill="none" marker-end="url(#a-red)"/>
+  <text x="505" y="314" text-anchor="middle" fill="#e0424a" font-family="monospace" font-size="9">pack.delete(data)</text>
+
+  <!-- Phase 3 dashed arrow: Generator bottom-center(366,222) → curves to Store left-center(560,309) -->
+  <path d="M 366,222 C 400,275 490,305 560,309" stroke="#e0424a" stroke-width="1.3" stroke-opacity="0.35" fill="none" stroke-dasharray="4 3" marker-end="url(#a-red-sm)"/>
+  <text x="472" y="258" text-anchor="middle" fill="#e0424a" font-family="monospace" font-size="9">store.delete(key)</text>
+
+  <!-- CleanupManager — secondary bulk path, static callout -->
+  <rect x="32" y="342" width="230" height="52" rx="10" fill="#fff" stroke="#d4d9e2" stroke-width="1.2" stroke-dasharray="5 3" filter="url(#card-shadow)"/>
+  <text x="147" y="363" text-anchor="middle" fill="#8892a4" font-family="monospace" font-size="8.5">CleanupManager.cleanupAll()</text>
+  <text x="147" y="379" text-anchor="middle" fill="#8892a4" font-size="11">Bulk cleanup  (CLI · Cypress)</text>
+  <!-- connector: CleanupManager top → phase 3 horizontal at y=300 -->
+  <line x1="110" y1="342" x2="110" y2="315" stroke="#d4d9e2" stroke-width="1" stroke-dasharray="3 2"/>
+
+  <!-- ═══ Animated dots ═══ -->
+
+  <!-- Phase 1 (indigo / green) -->
+  <circle r="6" fill="#5b5ef4" style="offset-path:path('M 188,190 L 288,190')" class="dot-a2g"/>
+  <circle r="6" fill="#5b5ef4" style="offset-path:path('M 392,190 L 488,190')" class="dot-g2p"/>
+  <circle r="6" fill="#0f9c6a" style="offset-path:path('M 590,222 C 618,222 638,252 638,268')" class="dot-p2s"/>
+
+  <!-- Phase 3 (red) -->
+  <circle r="6" fill="#e0424a" style="offset-path:path('M 110,222 L 110,300 L 288,300 L 288,222')" class="dot-a2gc"/>
+  <circle r="6" fill="#e0424a" style="offset-path:path('M 444,222 L 444,300 L 566,300 L 566,222')" class="dot-g2pd"/>
+  <circle r="6" fill="#e0424a" style="offset-path:path('M 366,222 C 400,275 490,305 560,309')" class="dot-g2sd"/>
+
+  <!-- Legend -->
+  <line x1="32" y1="418" x2="788" y2="418" stroke="#e2e6ec"/>
+  <circle cx="52"  cy="431" r="5" fill="#5b5ef4"/>
+  <text x="62"  y="435" fill="#8892a4" font-size="11">data packet flowing</text>
+  <circle cx="190" cy="431" r="5" fill="#0f9c6a"/>
+  <text x="200" y="435" fill="#8892a4" font-size="11">stored to cache</text>
+  <circle cx="308" cy="431" r="5" fill="#e0424a"/>
+  <text x="318" y="435" fill="#8892a4" font-size="11">cleanup signal</text>
+  <rect x="430" y="425" width="10" height="10" rx="2" fill="#fff" stroke="#d4d9e2" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="445" y="435" fill="#8892a4" font-size="11">CleanupManager — bulk path (CLI · Cypress)</text>
+</svg>

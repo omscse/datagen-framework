@@ -13,6 +13,7 @@ A TypeScript framework for defining, generating, and cleaning up test data acros
 - [How It Works](#how-it-works)
 - [Project Structure](#project-structure)
 - [Quick Start — Web UI](#quick-start--web-ui)
+- [Pack Contract](#pack-contract)
 - [Defining a Data Pack](#defining-a-data-pack)
 - [Registering Packs](#registering-packs)
 - [Using the Adapters](#using-the-adapters)
@@ -33,6 +34,12 @@ A TypeScript framework for defining, generating, and cleaning up test data acros
 ## Data Lifecycle
 
 ![Flow Animation](https://raw.githubusercontent.com/omscse/datagen-framework/main/docs/flow-animation.svg)
+
+---
+
+## Pack Contract
+
+![Pack Contract](https://raw.githubusercontent.com/omscse/datagen-framework/main/docs/pack-contract.svg)
 
 ---
 

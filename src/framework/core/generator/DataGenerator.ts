@@ -8,7 +8,7 @@ import type {
   PackOutput,
 } from '../types/pack.js';
 import type { GenerateOptions } from '../types/generator.js';
-import type { DataStore } from '../types/store.js';
+import type { DataStore, StoredDataRecord } from '../types/store.js';
 
 export class DataGenerator<TRegistry extends Record<string, PackClass>> {
   constructor(
@@ -27,7 +27,7 @@ export class DataGenerator<TRegistry extends Record<string, PackClass>> {
     logger.info(`Generating default data for pack: ${String(name)}`);
     const pack = new PackCtor();
     const data = await pack.createDefault();
-    await this.saveIfNeeded(String(name), data, options);
+    await this.save(String(name), data, options);
     return data as PackOutput<PackInstance<TRegistry, TName>>;
   }
 
@@ -45,21 +45,44 @@ export class DataGenerator<TRegistry extends Record<string, PackClass>> {
 
     logger.info(`Generating custom data for pack: ${String(name)}`);
     const data = await pack.createCustom(input);
-    await this.saveIfNeeded(String(name), data, options);
+    await this.save(String(name), data, options);
     return data as PackOutput<PackInstance<TRegistry, TName>>;
   }
 
-  async retrieveData<T = unknown>(storeName: string): Promise<T> {
-    const record = await this.store.get<T>(storeName);
+  async hasStoredData(packName: string, options?: GenerateOptions): Promise<boolean> {
+    return this.store.has(this.buildKey(packName, options?.storeAs));
+  }
+
+  async getStoredRecord<T = unknown>(packName: string, options?: GenerateOptions): Promise<StoredDataRecord<T>> {
+    return this.store.get<T>(this.buildKey(packName, options?.storeAs));
+  }
+
+  async retrieveData<T = unknown>(packName: string, options?: GenerateOptions): Promise<T> {
+    const record = await this.getStoredRecord<T>(packName, options);
     return record.data;
   }
 
-  private async saveIfNeeded(packName: string, data: unknown, options?: GenerateOptions): Promise<void> {
-    if (!options?.storeAs) return;
-    await this.store.save(options.storeAs, {
+  async cleanup<TName extends keyof TRegistry>(
+    packName: TName,
+    data: unknown,
+    options?: GenerateOptions,
+  ): Promise<void> {
+    const PackCtor = this.registry[packName];
+    if (!PackCtor) throw new PackNotFoundError(String(packName));
+    const pack = new PackCtor();
+    await pack.delete(data as never);
+    await this.store.delete(this.buildKey(String(packName), options?.storeAs));
+  }
+
+  private async save(packName: string, data: unknown, options?: GenerateOptions): Promise<void> {
+    await this.store.save(this.buildKey(packName, options?.storeAs), {
       packName,
       data,
       createdAt: new Date().toISOString(),
     });
+  }
+
+  private buildKey(packName: string, storeAs?: string): string {
+    return JSON.stringify({ packName, storeAs: storeAs ?? null });
   }
 }

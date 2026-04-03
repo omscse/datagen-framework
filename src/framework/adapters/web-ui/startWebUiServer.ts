@@ -16,7 +16,7 @@ export async function startWebUiServer(
 ): Promise<void> {
   const cacheFile = options.cacheFile ?? '.datagen/store.json';
   const port = options.port ?? 3456;
-  const { generator, store } = initWebUiAdapter(registry, cacheFile);
+  const { generator } = initWebUiAdapter(registry, cacheFile);
 
   const server = http.createServer(async (req: IncomingMessage, res: ServerResponse) => {
     const method = req.method ?? 'GET';
@@ -40,8 +40,8 @@ export async function startWebUiServer(
             const PackCtor = registry[registryKey];
             const instance = new PackCtor();
             let stored: unknown = null;
-            if (await store.has(registryKey)) {
-              stored = await store.get(registryKey);
+            if (await generator.hasStoredData(registryKey, { storeAs: registryKey })) {
+              stored = await generator.getStoredRecord(registryKey, { storeAs: registryKey });
             }
             return {
               key: registryKey,
@@ -65,9 +65,10 @@ export async function startWebUiServer(
         const body = await readBody(req);
         const { custom, input } = JSON.parse(body || '{}') as { custom?: boolean; input?: unknown };
 
-        // Delete existing record so regeneration is allowed
-        if (await store.has(key)) {
-          await store.delete(key);
+        // Clean up previously generated data before regenerating
+        if (await generator.hasStoredData(key, { storeAs: key })) {
+          const existing = await generator.getStoredRecord(key, { storeAs: key });
+          await generator.cleanup(key as never, existing.data, { storeAs: key });
         }
 
         let data: unknown;
@@ -85,8 +86,8 @@ export async function startWebUiServer(
       const dlMatch = /^\/api\/packs\/([^/]+)\/download$/.exec(path);
       if (method === 'GET' && dlMatch) {
         const key = dlMatch[1];
-        if (!(await store.has(key))) { sendJson(res, { error: 'No data stored for this pack' }, 404); return; }
-        const record = await store.get(key);
+        if (!(await generator.hasStoredData(key, { storeAs: key }))) { sendJson(res, { error: 'No data stored for this pack' }, 404); return; }
+        const record = await generator.getStoredRecord(key, { storeAs: key });
         res.writeHead(200, {
           'Content-Type': 'application/json',
           'Content-Disposition': `attachment; filename="${key}-data.json"`,
@@ -100,12 +101,10 @@ export async function startWebUiServer(
       if (method === 'DELETE' && delMatch) {
         const key = delMatch[1];
         if (!registry[key]) { sendJson(res, { error: `Pack not found: ${key}` }, 404); return; }
-        if (!(await store.has(key))) { sendJson(res, { error: 'No data stored for this pack' }, 404); return; }
+        if (!(await generator.hasStoredData(key, { storeAs: key }))) { sendJson(res, { error: 'No data stored for this pack' }, 404); return; }
 
-        const record = await store.get(key);
-        const pack = new registry[key]();
-        await pack.delete(record.data);
-        await store.delete(key);
+        const record = await generator.getStoredRecord(key, { storeAs: key });
+        await generator.cleanup(key as never, record.data, { storeAs: key });
         sendJson(res, { success: true });
         return;
       }

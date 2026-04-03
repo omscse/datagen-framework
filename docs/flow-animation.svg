@@ -1,230 +1,398 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" style="font-family:system-ui,-apple-system,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 510" style="font-family:system-ui,-apple-system,sans-serif">
   <defs>
     <style>
-      /* ── phase label cycling ── */
-      .phase-generate { animation: fadePhase 12s infinite 0s; }
-      .phase-cache     { animation: fadePhase 12s infinite 4s; }
-      .phase-cleanup   { animation: fadePhase 12s infinite 8s; }
-
-      @keyframes fadePhase {
-        0%   { opacity: 0; }
-        8%   { opacity: 1; }
-        25%  { opacity: 1; }
-        33%  { opacity: 0; }
-        100% { opacity: 0; }
+      /* ── Phase badges ── */
+      .ph-gen   { animation: phFade 12s infinite 0s; }
+      .ph-cache { animation: phFade 12s infinite 4s; }
+      .ph-clean { animation: phFade 12s infinite 8s; }
+      @keyframes phFade {
+        0%,100% { opacity:0 }
+        8%      { opacity:1 }
+        25%     { opacity:1 }
+        33%     { opacity:0 }
       }
 
-      /* ── node pulse during active phase ── */
-      .pulse-gen     { animation: pulseGen 12s infinite 0s; }
-      .pulse-store   { animation: pulseStore 12s infinite 0s; }
-      .pulse-cleanup { animation: pulseCleanup 12s infinite 0s; }
-
-      @keyframes pulseGen {
-        0%, 100% { stroke-opacity: 0.4; fill-opacity: 0.7; }
-        5%  { stroke-opacity: 1;   fill-opacity: 1; }
-        30% { stroke-opacity: 1;   fill-opacity: 1; }
-        40% { stroke-opacity: 0.4; fill-opacity: 0.7; }
+      /* ── Arrow pulse: active during generate (0→4 s) ── */
+      .cn-gen { animation: cnGen 12s infinite; stroke-opacity:.22; }
+      @keyframes cnGen {
+        0%,100% { stroke-opacity:.22 }
+        5%      { stroke-opacity:.85 }
+        30%     { stroke-opacity:.85 }
+        36%     { stroke-opacity:.22 }
       }
-      @keyframes pulseStore {
-        0%, 100% { stroke-opacity: 0.4; fill-opacity: 0.7; }
-        35% { stroke-opacity: 0.4; fill-opacity: 0.7; }
-        40% { stroke-opacity: 1;   fill-opacity: 1; }
-        65% { stroke-opacity: 1;   fill-opacity: 1; }
-        72% { stroke-opacity: 0.4; fill-opacity: 0.7; }
+      /* ── Arrow pulse: active while data lives in store (1.5→8 s) ── */
+      .cn-store { animation: cnStore 12s infinite; stroke-opacity:.22; }
+      @keyframes cnStore {
+        0%,100% { stroke-opacity:.22 }
+        13%     { stroke-opacity:.85 }
+        67%     { stroke-opacity:.85 }
+        72%     { stroke-opacity:.22 }
       }
-      @keyframes pulseCleanup {
-        0%, 100% { stroke-opacity: 0.4; fill-opacity: 0.7; }
-        68% { stroke-opacity: 0.4; fill-opacity: 0.7; }
-        75% { stroke-opacity: 1;   fill-opacity: 1; }
-        95% { stroke-opacity: 1;   fill-opacity: 1; }
-      }
-
-      /* ── travelling data dots ── */
-      /* Phase 1: Adapter → Generator (0-1.5s) */
-      .dot-a2g { animation: moveA2G 12s infinite 0s; }
-      @keyframes moveA2G {
-        0%   { offset-distance: 0%;   opacity: 0; }
-        2%   { offset-distance: 0%;   opacity: 1; }
-        12%  { offset-distance: 100%; opacity: 1; }
-        14%  { offset-distance: 100%; opacity: 0; }
-        100% { offset-distance: 100%; opacity: 0; }
-      }
-      /* Phase 1: Generator → Pack (1-2.5s) */
-      .dot-g2p { animation: moveG2P 12s infinite 0.8s; }
-      @keyframes moveG2P {
-        0%   { offset-distance: 0%;   opacity: 0; }
-        2%   { offset-distance: 0%;   opacity: 1; }
-        12%  { offset-distance: 100%; opacity: 1; }
-        14%  { offset-distance: 100%; opacity: 0; }
-        100% { offset-distance: 100%; opacity: 0; }
-      }
-      /* Phase 1: Pack → Store (2-3.5s) */
-      .dot-p2s { animation: moveP2S 12s infinite 1.8s; }
-      @keyframes moveP2S {
-        0%   { offset-distance: 0%;   opacity: 0; }
-        2%   { offset-distance: 0%;   opacity: 1; }
-        12%  { offset-distance: 100%; opacity: 1; }
-        14%  { offset-distance: 100%; opacity: 0; }
-        100% { offset-distance: 100%; opacity: 0; }
+      /* ── Arrow pulse: cleanup phase (8→12 s) ── */
+      .cn-clean { animation: cnClean 12s infinite; stroke-opacity:.18; }
+      @keyframes cnClean {
+        0%,100% { stroke-opacity:.18 }
+        70%     { stroke-opacity:.18 }
+        77%     { stroke-opacity:.75 }
+        99%     { stroke-opacity:.75 }
       }
 
-      /* Phase 2: Store glow pulse (4-7.9s) */
-      .store-glow { animation: storeGlow 12s infinite 0s; }
-      @keyframes storeGlow {
-        0%, 100% { opacity: 0; }
-        35%  { opacity: 0; }
-        40%  { opacity: 0.6; }
-        64%  { opacity: 0.6; }
-        68%  { opacity: 0; }
+      /* ── Card border emphasis ── */
+      .c-adapter { animation: cAdapter 12s infinite; }
+      @keyframes cAdapter {
+        0%,100% { stroke-width:1.5 }
+        5%      { stroke-width:2.8 }
+        30%     { stroke-width:2.8 }
+        36%     { stroke-width:1.5 }
+        69%     { stroke-width:1.5 }
+        76%     { stroke-width:2.8 }
+        99%     { stroke-width:2.8 }
+      }
+      .c-dgen { animation: cDgen 12s infinite; }
+      @keyframes cDgen {
+        0%,100% { stroke-width:1.5 }
+        5%      { stroke-width:2.8 }
+        33%     { stroke-width:2.8 }
+        39%     { stroke-width:1.5 }
+        69%     { stroke-width:1.5 }
+        76%     { stroke-width:2.8 }
+        99%     { stroke-width:2.8 }
+      }
+      .c-pack { animation: cPack 12s infinite; }
+      @keyframes cPack {
+        0%,100% { stroke-width:1.5 }
+        11%     { stroke-width:2.8 }
+        33%     { stroke-width:2.8 }
+        39%     { stroke-width:1.5 }
+        73%     { stroke-width:1.5 }
+        79%     { stroke-width:2.8 }
+        99%     { stroke-width:2.8 }
+      }
+      .c-store { animation: cStore 12s infinite; }
+      @keyframes cStore {
+        0%,100% { stroke-width:1.5 }
+        14%     { stroke-width:2.8 }
+        68%     { stroke-width:2.8 }
+        73%     { stroke-width:1.5 }
+      }
+      .c-clean { animation: cClean 12s infinite; }
+      @keyframes cClean {
+        0%,100% { stroke-width:1.5 }
+        70%     { stroke-width:1.5 }
+        77%     { stroke-width:2.8 }
+        99%     { stroke-width:2.8 }
       }
 
-      /* Phase 3: Cleanup → Pack (8-9.5s) */
-      .dot-c2p { animation: moveC2P 12s infinite 8s; }
-      @keyframes moveC2P {
-        0%   { offset-distance: 0%;   opacity: 0; }
-        2%   { offset-distance: 0%;   opacity: 1; }
-        12%  { offset-distance: 100%; opacity: 1; }
-        14%  { offset-distance: 100%; opacity: 0; }
-        100% { offset-distance: 100%; opacity: 0; }
+      /* ── Store glow ── */
+      .s-glow { animation: sGlow 12s infinite; opacity:0; }
+      @keyframes sGlow {
+        0%,100% { opacity:0 }
+        36%     { opacity:0 }
+        43%     { opacity:.55 }
+        65%     { opacity:.55 }
+        70%     { opacity:0 }
       }
-      /* Phase 3: Pack → Store (delete) (9-10.5s) */
-      .dot-del { animation: moveDel 12s infinite 9s; }
-      @keyframes moveDel {
-        0%   { offset-distance: 0%;   opacity: 0; }
-        2%   { offset-distance: 0%;   opacity: 1; }
-        12%  { offset-distance: 100%; opacity: 1; }
-        14%  { offset-distance: 100%; opacity: 0; }
-        100% { offset-distance: 100%; opacity: 0; }
+
+      /* ── Moving dots — Phase 1 (Generate) ── */
+      .d1a { animation: d1move 12s infinite 0s; }
+      .d1b { animation: d1move 12s infinite .75s; }
+      .d1c { animation: d1move 12s infinite 1.4s; }
+      @keyframes d1move {
+        0%   { offset-distance:0%;   opacity:0 }
+        2%   { offset-distance:0%;   opacity:1 }
+        14%  { offset-distance:100%; opacity:1 }
+        16%  { offset-distance:100%; opacity:0 }
+        100% { offset-distance:100%; opacity:0 }
+      }
+
+      /* ── Moving dots — Phase 3 (Cleanup) ── */
+      .d3a { animation: d3move 12s infinite 8.1s; }
+      .d3b { animation: d3move 12s infinite 8.8s; }
+      .d3c { animation: d3move 12s infinite 9.4s; }
+      @keyframes d3move {
+        0%   { offset-distance:0%;   opacity:0 }
+        2%   { offset-distance:0%;   opacity:1 }
+        14%  { offset-distance:100%; opacity:1 }
+        16%  { offset-distance:100%; opacity:0 }
+        100% { offset-distance:100%; opacity:0 }
       }
     </style>
 
-    <!-- arrow markers -->
-    <marker id="a-purple" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-      <path d="M0,0 L7,2.5 L0,5 Z" fill="#6366f1"/>
+    <!-- Arrowheads -->
+    <marker id="ah-indigo" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6Z" fill="#5b5ef4"/>
     </marker>
-    <marker id="a-green" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-      <path d="M0,0 L7,2.5 L0,5 Z" fill="#22c55e"/>
+    <marker id="ah-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6Z" fill="#7c3aed"/>
     </marker>
-    <marker id="a-red" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-      <path d="M0,0 L7,2.5 L0,5 Z" fill="#f87171"/>
+    <marker id="ah-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6Z" fill="#0f9c6a"/>
+    </marker>
+    <marker id="ah-red" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6Z" fill="#e0424a"/>
+    </marker>
+    <marker id="ah-red-sm" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+      <path d="M0,0 L6,2.5 L0,5Z" fill="#e0424a"/>
     </marker>
 
-    <!-- motion paths for animated dots -->
-    <!-- Adapter → Generator -->
-    <path id="path-a2g" d="M 188,200 L 290,200" fill="none"/>
-    <!-- Generator → Pack -->
-    <path id="path-g2p" d="M 392,200 L 490,200" fill="none"/>
-    <!-- Pack → Store -->
-    <path id="path-p2s" d="M 592,200 C 630,200 640,260 640,280" fill="none"/>
-    <!-- Cleanup → Pack (phase 3) -->
-    <path id="path-c2p" d="M 188,340 L 490,340 L 490,248" fill="none"/>
-    <!-- delete signal: Pack → Store -->
-    <path id="path-del" d="M 540,310 C 540,350 600,360 640,340" fill="none"/>
+    <!-- Motion paths for animated dots -->
+    <!-- P1: CLI → DataGenerator -->
+    <path id="mp-a2g"  d="M 178,125 C 210,125 222,160 240,175" fill="none"/>
+    <!-- P1: DataGenerator → Pack -->
+    <path id="mp-g2p"  d="M 415,162 C 443,154 458,150 473,148" fill="none"/>
+    <!-- P1: DataGenerator → Store (save) -->
+    <path id="mp-g2s"  d="M 415,245 C 445,260 460,276 473,285" fill="none"/>
+    <!-- P3: cleanup — same Adapter→DG path -->
+    <!-- P3: DataGenerator → Pack (delete) -->
+    <path id="mp-g2pd" d="M 415,182 C 443,173 458,167 473,164" fill="none"/>
+    <!-- P3: DataGenerator → Store (delete) -->
+    <path id="mp-g2sd" d="M 415,262 C 445,275 460,290 473,300" fill="none"/>
 
-    <!-- glow filter for store -->
-    <filter id="store-glow-f" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="8" result="b"/>
+    <!-- Filters -->
+    <filter id="glow-f" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow-f" x="-5%" y="-5%" width="116%" height="128%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0000001c"/>
     </filter>
   </defs>
 
-  <!-- ═══════════ Background ═══════════ -->
-  <rect width="820" height="420" rx="14" fill="#0d1117"/>
-  <rect x="1" y="1" width="818" height="418" rx="13" fill="none" stroke="#1e293b"/>
+  <!-- ── Background ── -->
+  <rect width="920" height="510" rx="15" fill="#f0f3f8"/>
+  <rect x="1" y="1" width="918" height="508" rx="14" fill="none" stroke="#d8dfe9"/>
 
-  <!-- Title -->
-  <text x="410" y="32" text-anchor="middle" fill="#f1f5f9" font-size="14" font-weight="700" letter-spacing="0.3">Data Lifecycle — Generate · Store · Cleanup</text>
-  <line x1="60" y1="42" x2="760" y2="42" stroke="#1e293b"/>
+  <!-- ── Title ── -->
+  <text x="460" y="31" text-anchor="middle" fill="#0d1525" font-size="14.5" font-weight="700" letter-spacing=".3">datagen-framework — Component Architecture &amp; Data Lifecycle</text>
+  <line x1="50" y1="45" x2="870" y2="45" stroke="#d8dfe9"/>
 
-  <!-- ═══════════ Phase labels (cycling) ═══════════ -->
-  <!-- Phase 1 badge -->
-  <g class="phase-generate">
-    <rect x="290" y="52" width="240" height="26" rx="13" fill="#1e1b4b"/>
-    <text x="410" y="70" text-anchor="middle" fill="#a5b4fc" font-size="12" font-weight="600">① Generating Data</text>
+  <!-- ── Phase badge ── -->
+  <g class="ph-gen">
+    <rect x="295" y="53" width="330" height="26" rx="13" fill="#eeefff"/>
+    <text x="460" y="71" text-anchor="middle" fill="#5b5ef4" font-size="12" font-weight="600">① Generate — Adapter → DataGenerator → Pack → Store</text>
   </g>
-  <!-- Phase 2 badge -->
-  <g class="phase-cache">
-    <rect x="290" y="52" width="240" height="26" rx="13" fill="#052e16"/>
-    <text x="410" y="70" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="600">② Data Cached in Store</text>
+  <g class="ph-cache">
+    <rect x="295" y="53" width="330" height="26" rx="13" fill="#e5f9f1"/>
+    <text x="460" y="71" text-anchor="middle" fill="#0f7a54" font-size="12" font-weight="600">② Data cached — StoredDataRecord persisted in Store</text>
   </g>
-  <!-- Phase 3 badge -->
-  <g class="phase-cleanup">
-    <rect x="290" y="52" width="240" height="26" rx="13" fill="#2d0808"/>
-    <text x="410" y="70" text-anchor="middle" fill="#f87171" font-size="12" font-weight="600">③ Cleaning Up</text>
+  <g class="ph-clean">
+    <rect x="295" y="53" width="330" height="26" rx="13" fill="#fff0f0"/>
+    <text x="460" y="71" text-anchor="middle" fill="#c0222a" font-size="12" font-weight="600">③ Cleanup — pack.delete(data) + store.delete(key)</text>
   </g>
 
-  <!-- ═══════════ Nodes — top row ═══════════ -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  LEFT COLUMN — Adapters  (x 20..178, w=158)    -->
+  <!-- ═══════════════════════════════════════════════ -->
 
-  <!-- [Adapter] -->
-  <rect x="32" y="168" width="156" height="64" rx="10" fill="#0c1a2e" stroke="#38bdf8" stroke-width="1.5" class="pulse-gen"/>
-  <text x="110" y="192" text-anchor="middle" fill="#7dd3fc" font-family="monospace" font-size="9">Web UI · CLI · Cypress</text>
-  <text x="110" y="214" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">Adapter</text>
+  <text x="99" y="95" text-anchor="middle" fill="#5c6b82" font-size="9" font-weight="700" letter-spacing="1.2">ADAPTERS</text>
 
-  <!-- Arrow: Adapter → Generator -->
-  <line x1="188" y1="200" x2="286" y2="200" stroke="#6366f1" stroke-width="1.5" stroke-opacity="0.4" marker-end="url(#a-purple)"/>
-  <text x="237" y="193" text-anchor="middle" fill="#6366f1" font-family="monospace" font-size="9">generate()</text>
+  <!-- CLI -->
+  <rect x="20" y="103" width="158" height="46" rx="9" fill="#fff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow-f)" class="c-adapter"/>
+  <text x="99" y="121" text-anchor="middle" fill="#3b82f6" font-family="monospace" font-size="7.5">initCliAdapter · JsonFileDataStore</text>
+  <text x="99" y="140" text-anchor="middle" fill="#0d1525" font-size="12.5" font-weight="700">CLI Adapter</text>
 
-  <!-- [DataGenerator] -->
-  <rect x="290" y="168" width="156" height="64" rx="10" fill="#12172a" stroke="#6366f1" stroke-width="1.5" class="pulse-gen"/>
-  <text x="368" y="192" text-anchor="middle" fill="#818cf8" font-family="monospace" font-size="9">DataGenerator</text>
-  <text x="368" y="214" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">Generator</text>
+  <!-- Cypress -->
+  <rect x="20" y="162" width="158" height="46" rx="9" fill="#fff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow-f)" class="c-adapter"/>
+  <text x="99" y="180" text-anchor="middle" fill="#3b82f6" font-family="monospace" font-size="7.5">initCypressAdapter · InMemoryStore</text>
+  <text x="99" y="199" text-anchor="middle" fill="#0d1525" font-size="12.5" font-weight="700">Cypress Adapter</text>
 
-  <!-- Arrow: Generator → Pack -->
-  <line x1="446" y1="200" x2="486" y2="200" stroke="#6366f1" stroke-width="1.5" stroke-opacity="0.4" marker-end="url(#a-purple)"/>
-  <text x="466" y="193" text-anchor="middle" fill="#6366f1" font-family="monospace" font-size="9">create()</text>
+  <!-- Web UI -->
+  <rect x="20" y="221" width="158" height="46" rx="9" fill="#fff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow-f)"/>
+  <text x="99" y="239" text-anchor="middle" fill="#3b82f6" font-family="monospace" font-size="7.5">startWebUiServer · REST API :3456</text>
+  <text x="99" y="258" text-anchor="middle" fill="#0d1525" font-size="12.5" font-weight="700">Web UI Adapter</text>
 
-  <!-- [Pack] -->
-  <rect x="490" y="168" width="156" height="64" rx="10" fill="#1e293b" stroke="#4f46e5" stroke-width="1.5" class="pulse-gen"/>
-  <text x="568" y="192" text-anchor="middle" fill="#a5b4fc" font-family="monospace" font-size="9">createDefault/Custom()</text>
-  <text x="568" y="214" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">Data Pack</text>
+  <!-- Terminal UI -->
+  <rect x="20" y="280" width="158" height="46" rx="9" fill="#fff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow-f)"/>
+  <text x="99" y="298" text-anchor="middle" fill="#3b82f6" font-family="monospace" font-size="7.5">startUiRunner · Interactive Menu</text>
+  <text x="99" y="317" text-anchor="middle" fill="#0d1525" font-size="12.5" font-weight="700">Terminal UI Adapter</text>
 
-  <!-- Arrow: Pack → Store (curved down) -->
-  <path d="M 592,232 C 592,260 600,270 612,280" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.4" fill="none" marker-end="url(#a-green)"/>
-  <text x="622" y="260" fill="#22c55e" font-family="monospace" font-size="9">save()</text>
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  CENTER — DataGenerator  (x 240..415, w=175)   -->
+  <!-- ═══════════════════════════════════════════════ -->
 
-  <!-- ═══════════ [Data Store] — centre ═══════════ -->
-  <!-- Glow overlay (phase 2) -->
-  <rect x="562" y="286" width="220" height="70" rx="10" fill="#4ade80" opacity="0" filter="url(#store-glow-f)" class="store-glow"/>
+  <text x="327" y="95" text-anchor="middle" fill="#5c6b82" font-size="9" font-weight="700" letter-spacing="1.2">CORE</text>
+
+  <rect x="240" y="103" width="175" height="265" rx="12" fill="#fff" stroke="#5b5ef4" stroke-width="1.5" filter="url(#shadow-f)" class="c-dgen"/>
+  <!-- header -->
+  <text x="327" y="122" text-anchor="middle" fill="#5b5ef4" font-family="monospace" font-size="8">@core/DataGenerator</text>
+  <text x="327" y="141" text-anchor="middle" fill="#0d1525" font-size="13.5" font-weight="700">DataGenerator</text>
+  <line x1="253" y1="149" x2="402" y2="149" stroke="#e6eaf3"/>
+  <!-- public API -->
+  <text x="255" y="164" fill="#2d3a52" font-family="monospace" font-size="8.5">generateDefault(name, opts?)</text>
+  <text x="255" y="179" fill="#2d3a52" font-family="monospace" font-size="8.5">generateCustom(name, input, opts?)</text>
+  <text x="255" y="194" fill="#2d3a52" font-family="monospace" font-size="8.5">retrieveData(name, opts?)</text>
+  <text x="255" y="209" fill="#2d3a52" font-family="monospace" font-size="8.5">hasStoredData(name, opts?)</text>
+  <text x="255" y="224" fill="#2d3a52" font-family="monospace" font-size="8.5">getStoredRecord(name, opts?)</text>
+  <text x="255" y="239" fill="#e0424a" font-family="monospace" font-size="8.5">cleanup(name, data, opts?)</text>
+  <line x1="253" y1="249" x2="402" y2="249" stroke="#e6eaf3"/>
+  <!-- constructor -->
+  <rect x="253" y="257" width="149" height="17" rx="5" fill="#f3f5fa"/>
+  <text x="327" y="269" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="7.5">new(registry, store, logger?)</text>
+  <!-- key builder -->
+  <rect x="253" y="279" width="149" height="17" rx="5" fill="#f3f5fa"/>
+  <text x="327" y="291" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="7.5">buildKey(packName, storeAs?)</text>
+  <!-- validate badge -->
+  <rect x="253" y="301" width="149" height="17" rx="5" fill="#eeefff"/>
+  <text x="327" y="313" text-anchor="middle" fill="#5b5ef4" font-family="monospace" font-size="7.5">validateRegistry() on init</text>
+  <!-- DG bottom: 103+265=368 -->
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  RIGHT TOP — Pack  (x 480..680, w=200)          -->
+  <!-- ═══════════════════════════════════════════════ -->
+
+  <text x="580" y="95" text-anchor="middle" fill="#5c6b82" font-size="9" font-weight="700" letter-spacing="1.2">PACK CONTRACT</text>
+
+  <!-- @Pack decorator ribbon above the card -->
+  <rect x="516" y="96" width="128" height="16" rx="8" fill="#ede9fe"/>
+  <text x="580" y="108" text-anchor="middle" fill="#7c3aed" font-family="monospace" font-size="8">@Pack({ name, description })</text>
+
+  <rect x="480" y="103" width="200" height="120" rx="10" fill="#fff" stroke="#7c3aed" stroke-width="1.5" filter="url(#shadow-f)" class="c-pack"/>
+  <text x="580" y="122" text-anchor="middle" fill="#7c3aed" font-family="monospace" font-size="8">DataGenerationPack&lt;TData, TInput&gt;</text>
+  <text x="580" y="140" text-anchor="middle" fill="#0d1525" font-size="13" font-weight="700">Data Pack</text>
+  <line x1="493" y1="148" x2="667" y2="148" stroke="#e6eaf3"/>
+  <text x="495" y="163" fill="#4c1d95" font-family="monospace" font-size="8.5">createDefault(): TData</text>
+  <text x="495" y="178" fill="#4c1d95" font-family="monospace" font-size="8.5">createCustom?(input: TInput): TData</text>
+  <text x="495" y="193" fill="#e0424a" font-family="monospace" font-size="8.5">delete(data: TData): void</text>
+  <text x="495" y="209" fill="#9d6fe0" font-family="monospace" font-size="7.5" opacity=".75">↳ OrderPack · UserPack · …</text>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  RIGHT BOTTOM — Store  (x 480..695, w=215)     -->
+  <!-- ═══════════════════════════════════════════════ -->
+
+  <text x="587" y="252" text-anchor="middle" fill="#5c6b82" font-size="9" font-weight="700" letter-spacing="1.2">STORE</text>
+
+  <!-- Glow behind store (animated) -->
+  <rect x="480" y="262" width="215" height="125" rx="10" fill="#0f9c6a" filter="url(#glow-f)" class="s-glow"/>
   <!-- Store box -->
-  <rect x="562" y="286" width="220" height="70" rx="10" fill="#071a0f" stroke="#22c55e" stroke-width="1.5" class="pulse-store"/>
-  <text x="672" y="308" text-anchor="middle" fill="#4ade80" font-family="monospace" font-size="9">JsonFileDataStore</text>
-  <text x="672" y="327" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">Data Store</text>
-  <text x="672" y="346" text-anchor="middle" fill="#86efac" font-family="monospace" font-size="9">.datagen/store.json</text>
+  <rect x="480" y="262" width="215" height="125" rx="10" fill="#e8f9f1" stroke="#0f9c6a" stroke-width="1.5" filter="url(#shadow-f)" class="c-store"/>
+  <text x="587" y="281" text-anchor="middle" fill="#0f7a54" font-family="monospace" font-size="8">DataStore interface</text>
+  <text x="587" y="299" text-anchor="middle" fill="#0d1525" font-size="13" font-weight="700">Data Store</text>
+  <line x1="493" y1="307" x2="682" y2="307" stroke="#b8ead0"/>
+  <text x="495" y="322" fill="#0f5e3e" font-family="monospace" font-size="8">save · get · has · delete · list · clear</text>
+  <text x="495" y="338" fill="#0f5e3e" font-family="monospace" font-size="8.5" font-weight="600">InMemoryDataStore</text>
+  <text x="495" y="354" fill="#0f5e3e" font-family="monospace" font-size="8.5" font-weight="600">JsonFileDataStore</text>
+  <text x="495" y="370" fill="#4a9e7a" font-family="monospace" font-size="7.5">.datagen/store.json</text>
 
-  <!-- ═══════════ Nodes — bottom row (cleanup) ═══════════ -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  BOTTOM — CleanupManager  (x 240..415)         -->
+  <!-- ═══════════════════════════════════════════════ -->
 
-  <!-- Arrow: CleanupManager → Pack (phase 3) -->
-  <path d="M 188,340 L 490,340 L 490,248" stroke="#f87171" stroke-width="1.5" stroke-opacity="0.4" fill="none" marker-end="url(#a-red)"/>
-  <text x="340" y="332" text-anchor="middle" fill="#f87171" font-family="monospace" font-size="9">cleanupAll()</text>
+  <rect x="240" y="392" width="175" height="66" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5 3" filter="url(#shadow-f)" class="c-clean"/>
+  <text x="327" y="411" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="8">CleanupManager</text>
+  <text x="327" y="428" text-anchor="middle" fill="#334155" font-size="12" font-weight="600">Bulk Cleanup</text>
+  <text x="327" y="445" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="7.5">cleanupAll() → CleanupReport</text>
+  <text x="327" y="456" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="7" opacity=".8">CLI · Cypress (after:run)</text>
 
-  <!-- [CleanupManager] -->
-  <rect x="32" y="308" width="156" height="64" rx="10" fill="#1c0a0a" stroke="#f87171" stroke-width="1.5" class="pulse-cleanup"/>
-  <text x="110" y="332" text-anchor="middle" fill="#fca5a5" font-family="monospace" font-size="9">CleanupManager</text>
-  <text x="110" y="354" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">Cleanup</text>
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  STATIC ARROWS                                  -->
+  <!-- ═══════════════════════════════════════════════ -->
 
-  <!-- Arrow: Pack delete → Store -->
-  <path d="M 540,310 C 540,360 600,370 560,356" stroke="#f87171" stroke-width="1.5" stroke-opacity="0.4" fill="none" marker-end="url(#a-red)"/>
-  <text x="578" y="378" text-anchor="middle" fill="#f87171" font-family="monospace" font-size="9">delete() · store.clear()</text>
+  <!-- CLI → DataGenerator -->
+  <path d="M 178,126 C 210,126 222,160 240,175"
+        stroke="#5b5ef4" stroke-width="1.4" fill="none"
+        marker-end="url(#ah-indigo)" class="cn-gen"/>
+  <!-- Cypress → DataGenerator -->
+  <path d="M 178,185 C 210,185 225,196 240,200"
+        stroke="#5b5ef4" stroke-width="1.4" fill="none"
+        marker-end="url(#ah-indigo)" class="cn-gen"/>
+  <!-- Web UI → DataGenerator -->
+  <path d="M 178,244 C 210,244 224,234 240,230"
+        stroke="#5b5ef4" stroke-width="1.4" fill="none"
+        marker-end="url(#ah-indigo)"/>
+  <!-- Terminal → DataGenerator -->
+  <path d="M 178,303 C 210,303 225,265 240,258"
+        stroke="#5b5ef4" stroke-width="1.4" fill="none"
+        marker-end="url(#ah-indigo)"/>
 
-  <!-- ═══════════ Animated data dots ═══════════ -->
+  <!-- "generate()" floating label (midpoint of the 2 active arrows) -->
+  <text x="206" y="174" fill="#5b5ef4" font-family="monospace" font-size="8" text-anchor="middle">generate()</text>
+  <!-- "cleanup()" label -->
+  <text x="206" y="295" fill="#e0424a" font-family="monospace" font-size="8" text-anchor="middle">cleanup()</text>
 
-  <!-- Phase 1 dots (indigo) -->
-  <circle r="6" fill="#818cf8" style="offset-path:path('M 188,200 L 290,200')" class="dot-a2g"/>
-  <circle r="6" fill="#818cf8" style="offset-path:path('M 392,200 L 490,200')" class="dot-g2p"/>
-  <circle r="6" fill="#4ade80" style="offset-path:path('M 592,232 C 592,260 600,270 612,280')" class="dot-p2s"/>
+  <!-- DataGenerator → Pack (create) -->
+  <path d="M 415,162 C 445,153 460,150 480,148"
+        stroke="#7c3aed" stroke-width="1.5" fill="none"
+        marker-end="url(#ah-purple)" class="cn-gen"/>
+  <text x="447" y="147" fill="#7c3aed" font-family="monospace" font-size="8" text-anchor="middle">create()</text>
 
-  <!-- Phase 3 dots (red) -->
-  <circle r="6" fill="#f87171" style="offset-path:path('M 188,340 L 490,340 L 490,248')" class="dot-c2p"/>
-  <circle r="6" fill="#f87171" style="offset-path:path('M 540,310 C 540,360 600,370 560,356')" class="dot-del"/>
+  <!-- DataGenerator → Store (save) -->
+  <path d="M 415,245 C 445,260 460,272 480,282"
+        stroke="#0f9c6a" stroke-width="1.5" fill="none"
+        marker-end="url(#ah-green)" class="cn-store"/>
+  <text x="452" y="262" fill="#0f7a54" font-family="monospace" font-size="8" text-anchor="middle">save()</text>
 
-  <!-- ═══════════ Legend ═══════════ -->
-  <line x1="32" y1="398" x2="788" y2="398" stroke="#1e293b"/>
-  <circle cx="52" cy="411" r="5" fill="#818cf8"/>
-  <text x="62" y="415" fill="#94a3b8" font-size="11">data packet flowing</text>
-  <circle cx="180" cy="411" r="5" fill="#4ade80"/>
-  <text x="190" y="415" fill="#94a3b8" font-size="11">stored to cache</text>
-  <circle cx="300" cy="411" r="5" fill="#f87171"/>
-  <text x="310" y="415" fill="#94a3b8" font-size="11">cleanup signal</text>
-  <rect x="418" y="405" width="10" height="10" rx="2" fill="#052e16" stroke="#22c55e" stroke-width="1"/>
-  <text x="432" y="415" fill="#94a3b8" font-size="11">cache persists between runs (CLI / Web UI)</text>
+  <!-- DataGenerator → Store (get/has) — dashed -->
+  <path d="M 415,260 C 445,272 460,282 480,290"
+        stroke="#0f9c6a" stroke-width="1.2" stroke-dasharray="4 3" fill="none"/>
+  <text x="452" y="281" fill="#0f7a54" font-family="monospace" font-size="7.5" text-anchor="middle">get / has()</text>
+
+  <!-- DataGenerator → Pack (delete, cleanup) — dashed red -->
+  <path d="M 415,180 C 445,170 460,166 480,164"
+        stroke="#e0424a" stroke-width="1.2" stroke-dasharray="4 3" fill="none"
+        marker-end="url(#ah-red-sm)" class="cn-clean"/>
+
+  <!-- DataGenerator → Store (delete, cleanup) — dashed red -->
+  <path d="M 415,263 C 445,276 460,289 480,298"
+        stroke="#e0424a" stroke-width="1.2" stroke-dasharray="4 3" fill="none"
+        marker-end="url(#ah-red-sm)" class="cn-clean"/>
+
+  <!-- "delete()" label shared between the two red dashed arrows -->
+  <text x="452" y="244" fill="#e0424a" font-family="monospace" font-size="7.5" text-anchor="middle">delete()</text>
+
+  <!-- DataGenerator bottom → CleanupManager top -->
+  <line x1="327" y1="368" x2="327" y2="392"
+        stroke="#94a3b8" stroke-width="1.1" stroke-dasharray="3 2"/>
+
+  <!-- CleanupManager → Pack (curved, dashed red) -->
+  <path d="M 415,410 C 525,410 565,305 565,223"
+        stroke="#e0424a" stroke-width="1.2" stroke-dasharray="4 3" fill="none"
+        marker-end="url(#ah-red-sm)" class="cn-clean"/>
+
+  <!-- CleanupManager → Store (dashed red) -->
+  <path d="M 415,422 C 455,422 468,395 480,387"
+        stroke="#e0424a" stroke-width="1.2" stroke-dasharray="4 3" fill="none"
+        marker-end="url(#ah-red-sm)" class="cn-clean"/>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  ANIMATED DOTS                                  -->
+  <!-- ═══════════════════════════════════════════════ -->
+
+  <!-- Phase 1 — Generate (indigo → purple → green) -->
+  <circle r="6" fill="#5b5ef4"
+    style="offset-path:path('M 178,126 C 210,126 222,160 240,175')"
+    class="d1a"/>
+  <circle r="6" fill="#7c3aed"
+    style="offset-path:path('M 415,162 C 445,153 460,150 480,148')"
+    class="d1b"/>
+  <circle r="6" fill="#0f9c6a"
+    style="offset-path:path('M 415,245 C 445,260 460,272 480,282')"
+    class="d1c"/>
+
+  <!-- Phase 3 — Cleanup (all red) -->
+  <circle r="6" fill="#e0424a"
+    style="offset-path:path('M 178,126 C 210,126 222,160 240,175')"
+    class="d3a"/>
+  <circle r="6" fill="#e0424a"
+    style="offset-path:path('M 415,180 C 445,170 460,166 480,164')"
+    class="d3b"/>
+  <circle r="6" fill="#e0424a"
+    style="offset-path:path('M 415,263 C 445,276 460,289 480,298')"
+    class="d3c"/>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  LEGEND                                         -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <line x1="30" y1="477" x2="890" y2="477" stroke="#d8dfe9"/>
+  <circle cx="50"  cy="492" r="5" fill="#5b5ef4"/>
+  <text x="61"  y="496" fill="#64748b" font-size="11">data packet</text>
+  <circle cx="158" cy="492" r="5" fill="#7c3aed"/>
+  <text x="169" y="496" fill="#64748b" font-size="11">pack call</text>
+  <circle cx="248" cy="492" r="5" fill="#0f9c6a"/>
+  <text x="259" y="496" fill="#64748b" font-size="11">stored to cache</text>
+  <circle cx="375" cy="492" r="5" fill="#e0424a"/>
+  <text x="386" y="496" fill="#64748b" font-size="11">cleanup signal</text>
+  <rect x="494" y="486" width="10" height="10" rx="2" fill="#fff" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="509" y="496" fill="#64748b" font-size="11">CleanupManager (bulk · CLI · Cypress)</text>
+  <line x1="715" y1="492" x2="738" y2="492" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="744" y="496" fill="#64748b" font-size="11">read / optional</text>
 </svg>

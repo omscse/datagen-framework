@@ -1,6 +1,6 @@
 {
   "name": "datagen-framework",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "type": "module",
   "author": "Omprakash Selvaraj",
   "license": "MIT",
@@ -15,6 +15,8 @@
   "files": [
     "dist",
     "src",
+    "docs",
+    "scripts",
     "README.md"
   ],
   "scripts": {
