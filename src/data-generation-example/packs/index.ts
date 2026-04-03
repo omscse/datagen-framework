@@ -4,4 +4,3 @@ export * from './ProductPack.js';
 export * from './OrderPack.js';
 export * from './AddressPack.js';
 export * from './SessionPack.js';
-export * from './OmsPackPack.js';
