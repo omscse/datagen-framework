@@ -175,23 +175,23 @@ export function getUiHtml(): string {
 
         var actionsHtml = '';
         if (!hasData) {
-          actionsHtml += '<button class="btn btn-primary" onclick="window._dg.generate(\'' + pack.key + '\', false)">Generate Default</button>';
+          actionsHtml += '<button class="btn btn-primary" onclick="window._dg.generate(\\'' + pack.key + '\\', false)">Generate Default</button>';
           if (pack.supportsCustom) {
-            actionsHtml += '<button class="btn btn-outline" onclick="window._dg.toggleCustom(\'' + pack.key + '\')">Custom &#9662;</button>';
+            actionsHtml += '<button class="btn btn-outline" onclick="window._dg.toggleCustom(\\'' + pack.key + '\\')">Custom &#9662;</button>';
           }
         } else {
-          actionsHtml += '<button class="btn btn-green" onclick="window._dg.download(\'' + pack.key + '\')">&#x2193; Download JSON</button>';
-          actionsHtml += '<button class="btn btn-outline" onclick="window._dg.generate(\'' + pack.key + '\', false)">Regenerate</button>';
-          actionsHtml += '<button class="btn btn-red" onclick="window._dg.cleanup(\'' + pack.key + '\')">Cleanup</button>';
+          actionsHtml += '<button class="btn btn-green" onclick="window._dg.download(\\'' + pack.key + '\\')">&#x2193; Download JSON</button>';
+          actionsHtml += '<button class="btn btn-outline" onclick="window._dg.generate(\\'' + pack.key + '\\', false)">Regenerate</button>';
+          actionsHtml += '<button class="btn btn-red" onclick="window._dg.cleanup(\\'' + pack.key + '\\')">Cleanup</button>';
         }
 
         var customPanelHtml = '';
         if (pack.supportsCustom && !hasData) {
           customPanelHtml = '<div class="custom-panel" id="custom-' + pack.key + '">'
             + '<label class="input-label">JSON input for createCustom(input)</label>'
-            + '<textarea class="json-input" id="jinput-' + pack.key + '" placeholder=\'{"key": "value"}\'></textarea>'
+            + '<textarea class="json-input" id="jinput-' + pack.key + '" placeholder=\\'{"key": "value"}\\'></textarea>'
             + '<div class="actions" style="margin-top:8px">'
-            + '<button class="btn btn-primary" onclick="window._dg.generate(\'' + pack.key + '\', true)">Generate Custom</button>'
+            + '<button class="btn btn-primary" onclick="window._dg.generate(\\'' + pack.key + '\\', true)">Generate Custom</button>'
             + '</div></div>';
         }
 

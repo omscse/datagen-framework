@@ -32,7 +32,7 @@ async function fileExists(p) {
  *
  * src/
  *   framework/core/index.ts
- *   data-generation/
+ *   <src-folder>/
  *     models/<key>.ts
  *     packs/[subdir/]Pack.ts  ← here
  */
@@ -126,14 +126,15 @@ function insertRegistryEntry(content, key, className) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-const SRC = path.resolve('src/data-generation');
-
 async function main() {
   const iface = rl.createInterface({ input, output });
 
   console.log('\n┌─ Create Data Pack ────────────────────────────┐\n');
 
   // ── Collect inputs ──────────────────────────────────────────────────────────
+
+  const srcRaw = await ask(iface, 'Source folder (relative to project root)', 'src/data-generation-example');
+  const SRC = path.resolve(srcRaw);
 
   const key = await ask(iface, 'Pack key (registry key, e.g. "payment")', '');
   if (!key) { iface.close(); console.error('\nError: Pack key is required.'); exit(1); }
@@ -205,8 +206,10 @@ async function main() {
 
   await fs.mkdir(packDir, { recursive: true });
 
+  const srcDisplay = srcRaw.replace(/\\/g, '/');
+
   await fs.writeFile(modelFile, genModelFile(modelName, supportsCustom, inputName));
-  console.log(`✔  Created  src/data-generation/models/${key}.ts`);
+  console.log(`✔  Created  ${srcDisplay}/models/${key}.ts`);
 
   await fs.writeFile(packFile, genPackFile({
     className, key, modelName, supportsCustom, inputName, description, coreImport, modelImport,
@@ -218,12 +221,12 @@ async function main() {
 
   const modelsContent = await fs.readFile(modelsIndex, 'utf8');
   await fs.writeFile(modelsIndex, modelsContent.trimEnd() + `\nexport * from './${key}.js';\n`);
-  console.log(`✔  Updated  src/data-generation/models/index.ts`);
+  console.log(`✔  Updated  ${srcDisplay}/models/index.ts`);
 
   const packExport = subdir ? `./${subdir}/${className}.js` : `./${className}.js`;
   const packsContent = await fs.readFile(packsIndex, 'utf8');
   await fs.writeFile(packsIndex, packsContent.trimEnd() + `\nexport * from '${packExport}';\n`);
-  console.log(`✔  Updated  src/data-generation/packs/index.ts`);
+  console.log(`✔  Updated  ${srcDisplay}/packs/index.ts`);
 
   // ── Update registry ─────────────────────────────────────────────────────────
 
@@ -234,7 +237,7 @@ async function main() {
   let updated = insertImport(registryContent, className, packImportPath);
   updated = insertRegistryEntry(updated, key, className);
   await fs.writeFile(registryFile, updated);
-  console.log(`✔  Updated  src/data-generation/registry/packRegistry.ts`);
+  console.log(`✔  Updated  ${srcDisplay}/registry/packRegistry.ts`);
 
   console.log(`\nDone! Run "npm run build" to verify.\n`);
 }

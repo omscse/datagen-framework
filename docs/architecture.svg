@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 510" style="font-family:system-ui,-apple-system,sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#6366f1"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#22c55e"/>
+    </marker>
+    <marker id="arr-up" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#38bdf8"/>
+    </marker>
+    <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="820" height="510" rx="14" fill="#0d1117"/>
+  <rect x="1" y="1" width="818" height="508" rx="13" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="410" y="34" text-anchor="middle" fill="#f1f5f9" font-size="15" font-weight="700" letter-spacing="0.3">datagen-framework — Architecture</text>
+  <line x1="60" y1="44" x2="760" y2="44" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- ── Layer label: PACKS ── -->
+  <text x="32" y="66" fill="#475569" font-family="monospace" font-size="9" letter-spacing="1">YOUR DATA PACKS</text>
+
+  <!-- Pack boxes (5 across) -->
+  <!-- UserPack -->
+  <rect x="32" y="72" width="136" height="52" rx="8" fill="#1e293b" stroke="#4f46e5" stroke-width="1.2"/>
+  <text x="100" y="91" text-anchor="middle" fill="#818cf8" font-family="monospace" font-size="9">@Pack</text>
+  <text x="100" y="108" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="600">UserPack</text>
+
+  <!-- AccountPack -->
+  <rect x="181" y="72" width="136" height="52" rx="8" fill="#1e293b" stroke="#4f46e5" stroke-width="1.2"/>
+  <text x="249" y="91" text-anchor="middle" fill="#818cf8" font-family="monospace" font-size="9">@Pack</text>
+  <text x="249" y="108" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="600">AccountPack</text>
+
+  <!-- OrderPack -->
+  <rect x="330" y="72" width="136" height="52" rx="8" fill="#1e293b" stroke="#4f46e5" stroke-width="1.2"/>
+  <text x="398" y="91" text-anchor="middle" fill="#818cf8" font-family="monospace" font-size="9">@Pack</text>
+  <text x="398" y="108" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="600">OrderPack</text>
+
+  <!-- ProductPack -->
+  <rect x="479" y="72" width="136" height="52" rx="8" fill="#1e293b" stroke="#4f46e5" stroke-width="1.2"/>
+  <text x="547" y="91" text-anchor="middle" fill="#818cf8" font-family="monospace" font-size="9">@Pack</text>
+  <text x="547" y="108" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="600">ProductPack</text>
+
+  <!-- more packs (dashed) -->
+  <rect x="628" y="72" width="160" height="52" rx="8" fill="#0f1117" stroke="#2d3148" stroke-width="1.2" stroke-dasharray="5 3"/>
+  <text x="708" y="102" text-anchor="middle" fill="#475569" font-size="12">+ more packs…</text>
+
+  <!-- Connectors: packs → registry (fan-in) -->
+  <polyline points="100,124 100,150 410,150 410,166" fill="none" stroke="#4f46e5" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arr)"/>
+  <polyline points="249,124 249,150" fill="none" stroke="#4f46e5" stroke-width="1" stroke-opacity="0.5"/>
+  <polyline points="398,124 398,150" fill="none" stroke="#4f46e5" stroke-width="1" stroke-opacity="0.5"/>
+  <polyline points="547,124 547,150" fill="none" stroke="#4f46e5" stroke-width="1" stroke-opacity="0.5"/>
+  <line x1="100" y1="150" x2="547" y2="150" stroke="#4f46e5" stroke-width="1" stroke-opacity="0.5"/>
+
+  <!-- ── Layer: Pack Registry ── -->
+  <text x="32" y="163" fill="#475569" font-family="monospace" font-size="9" letter-spacing="1">REGISTRY</text>
+  <rect x="32" y="168" width="756" height="56" rx="10" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5" filter="url(#glow-purple)"/>
+  <text x="410" y="190" text-anchor="middle" fill="#a5b4fc" font-family="monospace" font-size="10">definePackRegistry()</text>
+  <text x="410" y="211" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="600">Pack Registry   { user, account, order, product, session, … }</text>
+
+  <!-- Connectors: registry → core (split) -->
+  <polyline points="215,224 215,248" fill="none" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arr)"/>
+  <polyline points="600,224 600,248" fill="none" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── Layer: Core Engine ── -->
+  <text x="32" y="246" fill="#475569" font-family="monospace" font-size="9" letter-spacing="1">CORE ENGINE</text>
+
+  <!-- DataGenerator -->
+  <rect x="32" y="250" width="354" height="62" rx="10" fill="#12172a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="209" y="271" text-anchor="middle" fill="#818cf8" font-family="monospace" font-size="9">generateDefault()  ·  generateCustom()  ·  retrieveData()</text>
+  <text x="209" y="295" text-anchor="middle" fill="#f1f5f9" font-size="14" font-weight="700">DataGenerator</text>
+
+  <!-- CleanupManager -->
+  <rect x="434" y="250" width="354" height="62" rx="10" fill="#12172a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="611" y="271" text-anchor="middle" fill="#818cf8" font-family="monospace" font-size="9">cleanupAll()  ·  pack.delete(data)</text>
+  <text x="611" y="295" text-anchor="middle" fill="#f1f5f9" font-size="14" font-weight="700">CleanupManager</text>
+
+  <!-- Connectors: core → store -->
+  <polyline points="209,312 209,338" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.8" marker-end="url(#arr-green)"/>
+  <polyline points="611,312 611,338" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.8" marker-end="url(#arr-green)"/>
+
+  <!-- ── Layer: Data Store ── -->
+  <text x="32" y="336" fill="#475569" font-family="monospace" font-size="9" letter-spacing="1">DATA STORE</text>
+  <rect x="32" y="340" width="756" height="56" rx="10" fill="#071a0f" stroke="#22c55e" stroke-width="1.5" filter="url(#glow-green)"/>
+
+  <!-- divider -->
+  <line x1="410" y1="348" x2="410" y2="388" stroke="#0d2818" stroke-width="1"/>
+
+  <text x="210" y="364" text-anchor="middle" fill="#4ade80" font-family="monospace" font-size="10">JsonFileDataStore</text>
+  <text x="210" y="382" text-anchor="middle" fill="#86efac" font-size="11">.datagen/store.json  (CLI · Web UI)</text>
+
+  <text x="612" y="364" text-anchor="middle" fill="#4ade80" font-family="monospace" font-size="10">InMemoryDataStore</text>
+  <text x="612" y="382" text-anchor="middle" fill="#86efac" font-size="11">in-process  (Cypress)</text>
+
+  <!-- Connectors: store → adapters (fan-out upward arrows at bottom) -->
+  <polyline points="170,396 170,426" fill="none" stroke="#38bdf8" stroke-width="1.3" stroke-opacity="0.7" marker-end="url(#arr-up)"/>
+  <polyline points="410,396 410,426" fill="none" stroke="#38bdf8" stroke-width="1.3" stroke-opacity="0.7" marker-end="url(#arr-up)"/>
+  <polyline points="648,396 648,426" fill="none" stroke="#38bdf8" stroke-width="1.3" stroke-opacity="0.7" marker-end="url(#arr-up)"/>
+
+  <!-- ── Layer: Adapters ── -->
+  <text x="32" y="424" fill="#475569" font-family="monospace" font-size="9" letter-spacing="1">RUNNER ADAPTERS</text>
+
+  <!-- Web UI Adapter -->
+  <rect x="32" y="428" width="250" height="62" rx="10" fill="#0c1a2e" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="157" y="450" text-anchor="middle" fill="#7dd3fc" font-family="monospace" font-size="9">startWebUiServer(registry, options)</text>
+  <text x="157" y="476" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">🌐  Web UI</text>
+
+  <!-- CLI Adapter -->
+  <rect x="285" y="428" width="250" height="62" rx="10" fill="#1c130a" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="410" y="450" text-anchor="middle" fill="#fdba74" font-family="monospace" font-size="9">runCli(argv, registry, cacheFile)</text>
+  <text x="410" y="476" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">⌨  CLI</text>
+
+  <!-- Cypress Adapter -->
+  <rect x="538" y="428" width="250" height="62" rx="10" fill="#0a1f0a" stroke="#4ade80" stroke-width="1.5"/>
+  <text x="663" y="450" text-anchor="middle" fill="#86efac" font-family="monospace" font-size="9">initCypressAdapter({ registry, on })</text>
+  <text x="663" y="476" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">🌲  Cypress</text>
+</svg>

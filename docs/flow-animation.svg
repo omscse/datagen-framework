@@ -1,0 +1,230 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" style="font-family:system-ui,-apple-system,sans-serif">
+  <defs>
+    <style>
+      /* ── phase label cycling ── */
+      .phase-generate { animation: fadePhase 12s infinite 0s; }
+      .phase-cache     { animation: fadePhase 12s infinite 4s; }
+      .phase-cleanup   { animation: fadePhase 12s infinite 8s; }
+
+      @keyframes fadePhase {
+        0%   { opacity: 0; }
+        8%   { opacity: 1; }
+        25%  { opacity: 1; }
+        33%  { opacity: 0; }
+        100% { opacity: 0; }
+      }
+
+      /* ── node pulse during active phase ── */
+      .pulse-gen     { animation: pulseGen 12s infinite 0s; }
+      .pulse-store   { animation: pulseStore 12s infinite 0s; }
+      .pulse-cleanup { animation: pulseCleanup 12s infinite 0s; }
+
+      @keyframes pulseGen {
+        0%, 100% { stroke-opacity: 0.4; fill-opacity: 0.7; }
+        5%  { stroke-opacity: 1;   fill-opacity: 1; }
+        30% { stroke-opacity: 1;   fill-opacity: 1; }
+        40% { stroke-opacity: 0.4; fill-opacity: 0.7; }
+      }
+      @keyframes pulseStore {
+        0%, 100% { stroke-opacity: 0.4; fill-opacity: 0.7; }
+        35% { stroke-opacity: 0.4; fill-opacity: 0.7; }
+        40% { stroke-opacity: 1;   fill-opacity: 1; }
+        65% { stroke-opacity: 1;   fill-opacity: 1; }
+        72% { stroke-opacity: 0.4; fill-opacity: 0.7; }
+      }
+      @keyframes pulseCleanup {
+        0%, 100% { stroke-opacity: 0.4; fill-opacity: 0.7; }
+        68% { stroke-opacity: 0.4; fill-opacity: 0.7; }
+        75% { stroke-opacity: 1;   fill-opacity: 1; }
+        95% { stroke-opacity: 1;   fill-opacity: 1; }
+      }
+
+      /* ── travelling data dots ── */
+      /* Phase 1: Adapter → Generator (0-1.5s) */
+      .dot-a2g { animation: moveA2G 12s infinite 0s; }
+      @keyframes moveA2G {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+      /* Phase 1: Generator → Pack (1-2.5s) */
+      .dot-g2p { animation: moveG2P 12s infinite 0.8s; }
+      @keyframes moveG2P {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+      /* Phase 1: Pack → Store (2-3.5s) */
+      .dot-p2s { animation: moveP2S 12s infinite 1.8s; }
+      @keyframes moveP2S {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+
+      /* Phase 2: Store glow pulse (4-7.9s) */
+      .store-glow { animation: storeGlow 12s infinite 0s; }
+      @keyframes storeGlow {
+        0%, 100% { opacity: 0; }
+        35%  { opacity: 0; }
+        40%  { opacity: 0.6; }
+        64%  { opacity: 0.6; }
+        68%  { opacity: 0; }
+      }
+
+      /* Phase 3: Cleanup → Pack (8-9.5s) */
+      .dot-c2p { animation: moveC2P 12s infinite 8s; }
+      @keyframes moveC2P {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+      /* Phase 3: Pack → Store (delete) (9-10.5s) */
+      .dot-del { animation: moveDel 12s infinite 9s; }
+      @keyframes moveDel {
+        0%   { offset-distance: 0%;   opacity: 0; }
+        2%   { offset-distance: 0%;   opacity: 1; }
+        12%  { offset-distance: 100%; opacity: 1; }
+        14%  { offset-distance: 100%; opacity: 0; }
+        100% { offset-distance: 100%; opacity: 0; }
+      }
+    </style>
+
+    <!-- arrow markers -->
+    <marker id="a-purple" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5 Z" fill="#6366f1"/>
+    </marker>
+    <marker id="a-green" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5 Z" fill="#22c55e"/>
+    </marker>
+    <marker id="a-red" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5 Z" fill="#f87171"/>
+    </marker>
+
+    <!-- motion paths for animated dots -->
+    <!-- Adapter → Generator -->
+    <path id="path-a2g" d="M 188,200 L 290,200" fill="none"/>
+    <!-- Generator → Pack -->
+    <path id="path-g2p" d="M 392,200 L 490,200" fill="none"/>
+    <!-- Pack → Store -->
+    <path id="path-p2s" d="M 592,200 C 630,200 640,260 640,280" fill="none"/>
+    <!-- Cleanup → Pack (phase 3) -->
+    <path id="path-c2p" d="M 188,340 L 490,340 L 490,248" fill="none"/>
+    <!-- delete signal: Pack → Store -->
+    <path id="path-del" d="M 540,310 C 540,350 600,360 640,340" fill="none"/>
+
+    <!-- glow filter for store -->
+    <filter id="store-glow-f" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- ═══════════ Background ═══════════ -->
+  <rect width="820" height="420" rx="14" fill="#0d1117"/>
+  <rect x="1" y="1" width="818" height="418" rx="13" fill="none" stroke="#1e293b"/>
+
+  <!-- Title -->
+  <text x="410" y="32" text-anchor="middle" fill="#f1f5f9" font-size="14" font-weight="700" letter-spacing="0.3">Data Lifecycle — Generate · Store · Cleanup</text>
+  <line x1="60" y1="42" x2="760" y2="42" stroke="#1e293b"/>
+
+  <!-- ═══════════ Phase labels (cycling) ═══════════ -->
+  <!-- Phase 1 badge -->
+  <g class="phase-generate">
+    <rect x="290" y="52" width="240" height="26" rx="13" fill="#1e1b4b"/>
+    <text x="410" y="70" text-anchor="middle" fill="#a5b4fc" font-size="12" font-weight="600">① Generating Data</text>
+  </g>
+  <!-- Phase 2 badge -->
+  <g class="phase-cache">
+    <rect x="290" y="52" width="240" height="26" rx="13" fill="#052e16"/>
+    <text x="410" y="70" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="600">② Data Cached in Store</text>
+  </g>
+  <!-- Phase 3 badge -->
+  <g class="phase-cleanup">
+    <rect x="290" y="52" width="240" height="26" rx="13" fill="#2d0808"/>
+    <text x="410" y="70" text-anchor="middle" fill="#f87171" font-size="12" font-weight="600">③ Cleaning Up</text>
+  </g>
+
+  <!-- ═══════════ Nodes — top row ═══════════ -->
+
+  <!-- [Adapter] -->
+  <rect x="32" y="168" width="156" height="64" rx="10" fill="#0c1a2e" stroke="#38bdf8" stroke-width="1.5" class="pulse-gen"/>
+  <text x="110" y="192" text-anchor="middle" fill="#7dd3fc" font-family="monospace" font-size="9">Web UI · CLI · Cypress</text>
+  <text x="110" y="214" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">Adapter</text>
+
+  <!-- Arrow: Adapter → Generator -->
+  <line x1="188" y1="200" x2="286" y2="200" stroke="#6366f1" stroke-width="1.5" stroke-opacity="0.4" marker-end="url(#a-purple)"/>
+  <text x="237" y="193" text-anchor="middle" fill="#6366f1" font-family="monospace" font-size="9">generate()</text>
+
+  <!-- [DataGenerator] -->
+  <rect x="290" y="168" width="156" height="64" rx="10" fill="#12172a" stroke="#6366f1" stroke-width="1.5" class="pulse-gen"/>
+  <text x="368" y="192" text-anchor="middle" fill="#818cf8" font-family="monospace" font-size="9">DataGenerator</text>
+  <text x="368" y="214" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">Generator</text>
+
+  <!-- Arrow: Generator → Pack -->
+  <line x1="446" y1="200" x2="486" y2="200" stroke="#6366f1" stroke-width="1.5" stroke-opacity="0.4" marker-end="url(#a-purple)"/>
+  <text x="466" y="193" text-anchor="middle" fill="#6366f1" font-family="monospace" font-size="9">create()</text>
+
+  <!-- [Pack] -->
+  <rect x="490" y="168" width="156" height="64" rx="10" fill="#1e293b" stroke="#4f46e5" stroke-width="1.5" class="pulse-gen"/>
+  <text x="568" y="192" text-anchor="middle" fill="#a5b4fc" font-family="monospace" font-size="9">createDefault/Custom()</text>
+  <text x="568" y="214" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">Data Pack</text>
+
+  <!-- Arrow: Pack → Store (curved down) -->
+  <path d="M 592,232 C 592,260 600,270 612,280" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.4" fill="none" marker-end="url(#a-green)"/>
+  <text x="622" y="260" fill="#22c55e" font-family="monospace" font-size="9">save()</text>
+
+  <!-- ═══════════ [Data Store] — centre ═══════════ -->
+  <!-- Glow overlay (phase 2) -->
+  <rect x="562" y="286" width="220" height="70" rx="10" fill="#4ade80" opacity="0" filter="url(#store-glow-f)" class="store-glow"/>
+  <!-- Store box -->
+  <rect x="562" y="286" width="220" height="70" rx="10" fill="#071a0f" stroke="#22c55e" stroke-width="1.5" class="pulse-store"/>
+  <text x="672" y="308" text-anchor="middle" fill="#4ade80" font-family="monospace" font-size="9">JsonFileDataStore</text>
+  <text x="672" y="327" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">Data Store</text>
+  <text x="672" y="346" text-anchor="middle" fill="#86efac" font-family="monospace" font-size="9">.datagen/store.json</text>
+
+  <!-- ═══════════ Nodes — bottom row (cleanup) ═══════════ -->
+
+  <!-- Arrow: CleanupManager → Pack (phase 3) -->
+  <path d="M 188,340 L 490,340 L 490,248" stroke="#f87171" stroke-width="1.5" stroke-opacity="0.4" fill="none" marker-end="url(#a-red)"/>
+  <text x="340" y="332" text-anchor="middle" fill="#f87171" font-family="monospace" font-size="9">cleanupAll()</text>
+
+  <!-- [CleanupManager] -->
+  <rect x="32" y="308" width="156" height="64" rx="10" fill="#1c0a0a" stroke="#f87171" stroke-width="1.5" class="pulse-cleanup"/>
+  <text x="110" y="332" text-anchor="middle" fill="#fca5a5" font-family="monospace" font-size="9">CleanupManager</text>
+  <text x="110" y="354" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700">Cleanup</text>
+
+  <!-- Arrow: Pack delete → Store -->
+  <path d="M 540,310 C 540,360 600,370 560,356" stroke="#f87171" stroke-width="1.5" stroke-opacity="0.4" fill="none" marker-end="url(#a-red)"/>
+  <text x="578" y="378" text-anchor="middle" fill="#f87171" font-family="monospace" font-size="9">delete() · store.clear()</text>
+
+  <!-- ═══════════ Animated data dots ═══════════ -->
+
+  <!-- Phase 1 dots (indigo) -->
+  <circle r="6" fill="#818cf8" style="offset-path:path('M 188,200 L 290,200')" class="dot-a2g"/>
+  <circle r="6" fill="#818cf8" style="offset-path:path('M 392,200 L 490,200')" class="dot-g2p"/>
+  <circle r="6" fill="#4ade80" style="offset-path:path('M 592,232 C 592,260 600,270 612,280')" class="dot-p2s"/>
+
+  <!-- Phase 3 dots (red) -->
+  <circle r="6" fill="#f87171" style="offset-path:path('M 188,340 L 490,340 L 490,248')" class="dot-c2p"/>
+  <circle r="6" fill="#f87171" style="offset-path:path('M 540,310 C 540,360 600,370 560,356')" class="dot-del"/>
+
+  <!-- ═══════════ Legend ═══════════ -->
+  <line x1="32" y1="398" x2="788" y2="398" stroke="#1e293b"/>
+  <circle cx="52" cy="411" r="5" fill="#818cf8"/>
+  <text x="62" y="415" fill="#94a3b8" font-size="11">data packet flowing</text>
+  <circle cx="180" cy="411" r="5" fill="#4ade80"/>
+  <text x="190" y="415" fill="#94a3b8" font-size="11">stored to cache</text>
+  <circle cx="300" cy="411" r="5" fill="#f87171"/>
+  <text x="310" y="415" fill="#94a3b8" font-size="11">cleanup signal</text>
+  <rect x="418" y="405" width="10" height="10" rx="2" fill="#052e16" stroke="#22c55e" stroke-width="1"/>
+  <text x="432" y="415" fill="#94a3b8" font-size="11">cache persists between runs (CLI / Web UI)</text>
+</svg>
